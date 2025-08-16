@@ -2,17 +2,26 @@ pipeline {
     agent any
 
     stages {
+        stage('Prepare') {
+            steps {
+                sh '''
+                # Ensure directory exists with correct permissions
+                mkdir -p /go-build
+                chmod 777 /go-build
+                '''
+            }
+        }
         stage('Unit Tests - Backend') {
             agent {
                 docker {
                     image 'snakee/golang-junit:1.21'
-                    args '-v /tmp/go-build:/go-build'
+                    args '-v /tmp/go-build:/go-build -v /tmp/go:/go'
                     reuseNode true
                 }
             }
             environment {
                 GOCACHE = "/go-build"
-                GOPATH = "/tmp/go"
+                GOPATH = "/go"
             }
             steps {
                dir('bugtracker-backend') {
