@@ -5,7 +5,6 @@ pipeline {
         stage('Unit Tests - Backend') {
             agent {
                 docker {
-                    # Use a specific Go image with JUnit support
                     image 'snakee/golang-junit:1.21'
                     reuseNode true
                 }
