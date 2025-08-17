@@ -9,14 +9,19 @@ pipeline {
                     reuseNode true
                 }
             }
-            environment {
-                GOCACHE = "${WORKSPACE}/.gocache"
-                GOMODCACHE = "${WORKSPACE}/.gomodcache"
-            }
             steps {
                dir('bugtracker-backend') {
-                    sh 'mkdir -p $GOCACHE $GOMODCACHE'
-                    sh 'go test -v ./...'
+                    sh '''
+                        # Set Go cache to a writable location
+                        export GOCACHE="$PWD/.cache/go-build"
+                        export GOMODCACHE="$PWD/.cache/go-mod"
+                        
+                        # Create cache directories
+                        mkdir -p "$GOCACHE" "$GOMODCACHE"
+                        
+                        # Run the tests
+                        go test -v ./...
+                    '''
                 }
             }
         }
