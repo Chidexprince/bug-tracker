@@ -109,7 +109,7 @@ pipeline {
                 sh 'npx wait-port http://localhost:8080/api/health -t 30000'
 
                 sh 'npm ci'
-                sh 'npx playwright tes'
+                sh 'npx playwright test'
             }
         }
   
